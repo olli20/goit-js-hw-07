@@ -3,16 +3,16 @@ import { galleryItems } from './gallery-items.js';
 
 // console.log(galleryItems);
 
-const modal = basicLightbox.create(`
-    <img class="modal-img" src="" width="800" height="600">
-`);
+const modal = basicLightbox.create(
+  `<img class="modal-img" src="" width="800" height="600">`
+);
 
-const getItemTemplate = ({ preview, description, original}) =>
+const getItemTemplate = ({ preview, description, original }) =>
   `<div class="gallery__item" >
         <a href="" class="gallery__link">
             <img class="gallery__image" src ="${preview}" alt ="${description}" data-source="${original}">
         </a>
-    </div>`;
+   </div>`;
 
 const galleryRef = document.querySelector('.gallery');
 const modalImageRef = modal.element().querySelector('.modal-img');
