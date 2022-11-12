@@ -3,7 +3,7 @@ import { galleryItems } from './gallery-items.js';
 
 // console.log(galleryItems);
 
-const instance = basicLightbox.create(`
+const modal = basicLightbox.create(`
     <img class="modal-img" src="" width="800" height="600">
 `);
 
@@ -15,7 +15,8 @@ const getItemTemplate = ({ preview, description, original}) =>
     </div>`;
 
 const galleryRef = document.querySelector('.gallery');
-const modalImageRef = instance.element().querySelector('.modal-img');
+const modalImageRef = modal.element().querySelector('.modal-img');
+const bodyRef = document.querySelector('body');
 
 const renderGallery = () => {
   const lis = galleryItems.map((item) => getItemTemplate(item));
@@ -24,7 +25,7 @@ const renderGallery = () => {
 
 renderGallery();
 
-const onClickShowImg = (event) => {
+const onClickShowModal = (event) => {
   event.preventDefault();
 
   if (event.target.nodeName !== 'IMG') {
@@ -32,9 +33,22 @@ const onClickShowImg = (event) => {
   }
 
   modalImageRef.src = event.target.dataset.source;
-  
-  instance.show();
+
+  modal.show(() => bodyRef.addEventListener('keydown', onEscPressCloseModal));
 }
-  
-galleryRef.addEventListener('click', onClickShowImg);
-modalImageRef.addEventListener('click', instance.close);
+
+const onEscPressCloseModal = (event) => {
+  if (event.keyCode == 27) {
+    modal.close(() => bodyRef.removeEventListener('keydown', onEscPressCloseModal));
+  }
+}
+
+const onClickCloseModal = (event) => {
+  event.preventDefault();
+  modal.close(() => bodyRef.removeEventListener('keydown', onEscPressCloseModal));
+}
+
+galleryRef.addEventListener('click', onClickShowModal);
+modal.element().addEventListener('click', onClickCloseModal);
+
+
