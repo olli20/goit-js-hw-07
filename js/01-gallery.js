@@ -14,13 +14,15 @@ const getItemTemplate = ({ preview, description, original }) =>
         </a>
    </div>`;
 
-const galleryRef = document.querySelector('.gallery');
-const modalImageRef = modal.element().querySelector('.modal-img');
-const bodyRef = document.querySelector('body');
+const refs = {
+  gallery: document.querySelector('.gallery'),
+  modalImage: modal.element().querySelector('.modal-img'),
+  body: document.querySelector('body'),
+}
 
 const renderGallery = () => {
   const lis = galleryItems.map((item) => getItemTemplate(item));
-  galleryRef.insertAdjacentHTML('beforeend', lis.join(''));
+  refs.gallery.insertAdjacentHTML('beforeend', lis.join(''));
 };
 
 renderGallery();
@@ -32,23 +34,23 @@ const onClickShowModal = (event) => {
     return;
   }
 
-  modalImageRef.src = event.target.dataset.source;
+  refs.modalImage.src = event.target.dataset.source;
 
-  modal.show(() => bodyRef.addEventListener('keydown', onEscPressCloseModal));
+  modal.show(() => refs.body.addEventListener('keydown', onEscPressCloseModal));
 }
 
 const onEscPressCloseModal = (event) => {
   if (event.keyCode == 27) {
-    modal.close(() => bodyRef.removeEventListener('keydown', onEscPressCloseModal));
+    modal.close(() => refs.body.removeEventListener('keydown', onEscPressCloseModal));
   }
 }
 
 const onClickCloseModal = (event) => {
   event.preventDefault();
-  modal.close(() => bodyRef.removeEventListener('keydown', onEscPressCloseModal));
+  modal.close(() => refs.body.removeEventListener('keydown', onEscPressCloseModal));
 }
 
-galleryRef.addEventListener('click', onClickShowModal);
+refs.gallery.addEventListener('click', onClickShowModal);
 modal.element().addEventListener('click', onClickCloseModal);
 
 
